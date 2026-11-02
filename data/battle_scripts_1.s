@@ -838,24 +838,45 @@ BattleScript_EffectDragonRage::
 	goto BattleScript_HitFromAtkAnimation
 
 BattleScript_EffectTrap::
-	jumpifnotmove MOVE_WHIRLPOOL, BattleScript_DoWrapEffect
+	jumpifnotmove MOVE_WHIRLPOOL, BattleScript_TrapCheckSandTomb
 	jumpifnostatus3 BS_TARGET, STATUS3_UNDERWATER, BattleScript_DoWrapEffect
 	orword gHitMarker, HITMARKER_IGNORE_UNDERWATER
+	setbyte sDMG_MULTIPLIER, 2
+BattleScript_TrapCheckSandTomb::
+	jumpifnotmove MOVE_SAND_TOMB, BattleScript_DoWrapEffect
+	jumpifnostatus3 BS_TARGET, STATUS3_UNDERGROUND, BattleScript_DoWrapEffect
+	orword gHitMarker, HITMARKER_IGNORE_UNDERGROUND
 	setbyte sDMG_MULTIPLIER, 2
 BattleScript_DoWrapEffect::
 	attackcanceler
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
 	attackstring
+	jumpifstatus2 BS_ATTACKER, STATUS2_MULTIPLETURNS, BattleScript_TrapCritCalc
 	ppreduce
+BattleScript_TrapCritCalc::
 	critcalc
 	damagecalc
 	typecalc
 	adjustnormaldamage
-	jumpifmovehadnoeffect BattleScript_ButItFailed
+	attackanimation
+	waitanimation
+	effectivenesssound
+	hitanimation BS_TARGET
+	waitstate
+	healthbarupdate BS_TARGET
+	datahpupdate BS_TARGET
+	critmessage
+	waitmessage B_WAIT_TIME_LONG
+	resultmessage
+	waitmessage B_WAIT_TIME_LONG
+	setmoveeffect MOVE_EFFECT_FLINCH
+	seteffectwithchance
+	jumpifmovehadnoeffect BattleScript_TrapTryFaint
 	setmoveeffect MOVE_EFFECT_WRAP
 	seteffectprimary
-	setmoveeffect MOVE_EFFECT_FLINCH
-	goto BattleScript_HitFromAtkAnimation
+BattleScript_TrapTryFaint::
+	tryfaintmon BS_TARGET
+	goto BattleScript_MoveEnd
 
 BattleScript_EffectDoubleHit::
 	attackcanceler
