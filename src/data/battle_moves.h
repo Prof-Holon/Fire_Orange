@@ -145,10 +145,10 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_VICE_GRIP] =
     {
-        .effect = EFFECT_HIT,
+        .effect = EFFECT_HIGH_CRITICAL,
         .power = 55,
-        .type = TYPE_ROCK,
-        .accuracy = 100,
+        .type = TYPE_BUG,
+        .accuracy = 95,
         .pp = 30,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
@@ -161,7 +161,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .effect = EFFECT_RECHARGE,
         .power = 130,
         .type = TYPE_BUG,
-        .accuracy = 30,
+        .accuracy = 90,
         .pp = 5,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
