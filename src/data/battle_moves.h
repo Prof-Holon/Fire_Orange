@@ -341,7 +341,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_JUMP_KICK] =
     {
         .effect = EFFECT_RECOIL_IF_MISS,
-        .power = 70,
+        .power = 85,
         .type = TYPE_FIGHTING,
         .accuracy = 95,
         .pp = 25,
@@ -1771,9 +1771,9 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_HI_JUMP_KICK] =
     {
         .effect = EFFECT_RECOIL_IF_MISS,
-        .power = 85,
+        .power = 140,
         .type = TYPE_FIGHTING,
-        .accuracy = 90,
+        .accuracy = 60,
         .pp = 20,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
