@@ -2240,7 +2240,7 @@ static const u16 sEspeonLevelUpLearnset[] = {
 //johto add
 static const u16 sUmbreonLevelUpLearnset[] = {
     LEVEL_UP_MOVE(1, MOVE_TACKLE),
-    LEVEL_UP_MOVE(1, MOVE_SCREECH),
+    LEVEL_UP_MOVE(1, MOVE_TAIL_WHIP),
     LEVEL_UP_MOVE(1, MOVE_HELPING_HAND),
     LEVEL_UP_MOVE(1, MOVE_CONFUSE_RAY),
     LEVEL_UP_MOVE(8, MOVE_SAND_ATTACK),
