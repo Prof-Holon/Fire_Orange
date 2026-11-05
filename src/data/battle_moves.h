@@ -2225,8 +2225,8 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_NIGHTMARE] =
     {
-        .effect = EFFECT_NIGHTMARE,
-        .power = 0,
+        .effect = EFFECT_DREAM_EATER,
+        .power = 100,
         .type = TYPE_GHOST,
         .accuracy = 100,
         .pp = 15,
