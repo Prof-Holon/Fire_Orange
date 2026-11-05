@@ -331,6 +331,7 @@ BattleScript_EffectAbsorb::
 	damagecalc
 	typecalc
 	adjustnormaldamage
+	jumpifstatus2 BS_TARGET, STATUS2_SUBSTITUTE, BattleScript_AbsorbSubstituteHit
 	attackanimation
 	waitanimation
 	effectivenesssound
@@ -358,6 +359,21 @@ BattleScript_AbsorbUpdateHp::
 	waitmessage B_WAIT_TIME_LONG
 BattleScript_AbsorbTryFainting::
 	tryfaintmon BS_ATTACKER
+	tryfaintmon BS_TARGET
+	goto BattleScript_MoveEnd
+
+BattleScript_AbsorbSubstituteHit::
+	attackanimation
+	waitanimation
+	effectivenesssound
+	hitanimation BS_TARGET
+	waitstate
+	healthbarupdate BS_TARGET
+	datahpupdate BS_TARGET
+	critmessage
+	waitmessage B_WAIT_TIME_LONG
+	resultmessage
+	waitmessage B_WAIT_TIME_LONG
 	tryfaintmon BS_TARGET
 	goto BattleScript_MoveEnd
 
