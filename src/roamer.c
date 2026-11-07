@@ -79,22 +79,7 @@ void ClearRoamerData(void)
     }
 }
 
-#define GetRoamerSpecies() ({\
-    u16 a;\
-    switch (GetStarterSpecies())\
-    {\
-    default:\
-        a = SPECIES_RAIKOU;\
-        break;\
-    case SPECIES_BULBASAUR:\
-        a = SPECIES_ENTEI;\
-        break;\
-    case SPECIES_CHARMANDER:\
-        a = SPECIES_SUICUNE;\
-        break;\
-    }\
-    a;\
-})
+#define GetRoamerSpecies() SPECIES_MEW
 
 void CreateInitialRoamerMon(void)
 {
