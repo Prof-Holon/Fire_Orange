@@ -1401,9 +1401,9 @@ const struct SpeciesInfo gSpeciesInfo[] =
     [SPECIES_VENONAT] =
     {
         .baseHP = 60,
-        .baseAttack = 55,
-        .baseDefense = 50,
-        .baseSpeed = 45,
+        .baseAttack = 80,
+        .baseDefense = 60,
+        .baseSpeed = 80,
         .baseSpAttack = 40,
         .baseSpDefense = 40,
         .types = {TYPE_BUG, TYPE_POISON},
