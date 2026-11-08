@@ -100,6 +100,8 @@ PalletTown_ProfessorOaksLab_EventScript_NationalDexScene::
 	call_if_eq VAR_FACING, DIR_WEST, PalletTown_ProfessorOaksLab_EventScript_OakBringDexesOverWest
 	textcolor NPC_TEXT_COLOR_NEUTRAL
 	playfanfare MUS_OBTAIN_KEY_ITEM
+	giveitem ITEM_AURORA_TICKET, 1
+	giveitem ITEM_MYSTIC_TICKET, 1
 	message PalletTown_ProfessorOaksLab_Text_PlayersPokedexWasUpgraded
 	waitmessage
 	waitfanfare

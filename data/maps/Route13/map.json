@@ -179,6 +179,21 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "EventScript_CutTree",
       "flag": "FLAG_TEMP_12"
+    },
+    {
+      "local_id": "ROUTE_13_MOVE_REMINDER",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_OLD_MAN_1",
+      "x": 1,
+      "y": 14,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_NONE",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "Route13_EventScript_MoveReminder",
+      "flag": "0"
     }
   ],
   "warp_events": [],

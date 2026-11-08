@@ -243,6 +243,7 @@
 #define FLAG_SNATCH_AFFECTED        (1 << 3)
 #define FLAG_MIRROR_MOVE_AFFECTED   (1 << 4)
 #define FLAG_KINGS_ROCK_AFFECTED    (1 << 5)
+#define FLAG_PUNCH					(1 << 6)
 
 // Growth rates
 #define GROWTH_MEDIUM_FAST  0
@@ -282,6 +283,7 @@
 #define EVO_BEAUTY           15 // Pokémon levels up with beauty ≥ specified value
 #define EVO_TRIO			 16 // ADD: Pokemon levels up with two others in party
 #define EVO_PARTY            17 // ADD: evolve when you level and a certain Pokemon is in the party
+#define EVO_LEVEL_EXACT		18 // ADD: evolve at precise level
 
 #define EVOS_PER_MON 5
 

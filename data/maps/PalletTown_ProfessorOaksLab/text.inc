@@ -335,7 +335,9 @@ PalletTown_ProfessorOaksLab_Text_OakNowTheseUnitsCanRecordMoreData::
     .string "a lot more POKéMON.$"
 
 PalletTown_ProfessorOaksLab_Text_PlayersPokedexWasUpgraded::
-    .string "{PLAYER}'s POKéDEX was upgraded!$"
+    .string "{PLAYER}'s POKéDEX was upgraded!\p"
+    .string "And {PLAYER} received the AURORA\n"
+    .string "TICKET and MYSTIC TICKET.$"
 
 PalletTown_ProfessorOaksLab_Text_OakMustReallyWorkToFillPokedex::
     .string "Now, {PLAYER} and {RIVAL}!\p"

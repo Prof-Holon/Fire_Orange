@@ -126,3 +126,40 @@ Route13_Text_RouteSign::
     .string "ROUTE 13\n"
     .string "North to SILENCE BRIDGE$"
 
+Route13_Text_TeachMonMoveForHeartScale::
+    .string "I'm the MOVE REMINDER.\p"
+    .string "I've sailed far and wide,\n"
+    .string "so I know every single move that\n"
+    .string "POKéMON can learn growing up.\p"
+    .string "My heart belongs only to the sea,\n"
+    .string "but my sailing days are over now.\p"
+    .string "If you bring me a HEART SCALE\n"
+    .string "I'll teach a move to one POKéMON.$"
+
+Route13_Text_NeedHeartScale::
+    .string "If your POKéMON need to learn a\n"
+    .string "move, I need a HEART SCALE.$"
+
+Route13_Text_WantMeToTeachMove::
+    .string "Say, landlubber,\n"
+    .string "do you want me to teach a move\n"
+    .string "to a POKéMON of yours?$"
+
+Route13_Text_TutorWhichMon::
+    .string "Which POKéMON needs tutoring?$"
+
+Route13_Text_TeachWhichMove::
+    .string "Which move should I teach?$"
+
+Route13_Text_HandedOverHeartScale::
+    .string "{PLAYER} handed over one\n"
+    .string "HEART SCALE in exchange.$"
+
+Route13_Text_NoMoveICanTeachThatMon::
+    .string "Sorry…\p"
+    .string "It doesn't appear as if I have a\n"
+    .string "move I can teach that POKéMON.$"
+
+Route13_Text_CantTeachAnEgg::
+   .string "Hunh? There isn't a single move\n"
+   .string "that I can teach an EGG.$"
