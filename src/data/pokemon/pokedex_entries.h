@@ -623,7 +623,19 @@ const struct PokedexEntry gPokedexEntries[] =
         .trainerScale = 256,
         .trainerOffset = -2,
     },
-
+//add variant
+[NATIONAL_DEX_PARASHED] =
+    {
+        .categoryName = _("MUSHROOM"),
+        .height = 10,
+        .weight = 241,
+        .description = gParasectPokedexText,
+        .unusedDescription = gParasectPokedexTextUnused,
+        .pokemonScale = 307,
+        .pokemonOffset = 8,
+        .trainerScale = 256,
+        .trainerOffset = -2,
+    },
     [NATIONAL_DEX_VENONAT] =
     {
         .categoryName = _("INSECT"),
