@@ -48,6 +48,7 @@ const u8 *const gMonFootprintTable[] =
     [SPECIES_VILEPLUME] = gMonFootprint_Vileplume,
     [SPECIES_PARAS] = gMonFootprint_Paras,
     [SPECIES_PARASECT] = gMonFootprint_Parasect,
+    [SPECIES_PARASHED] = gMonFootprint_Parasect,
     [SPECIES_VENONAT] = gMonFootprint_Venonat,
     [SPECIES_VENOMOTH] = gMonFootprint_Venomoth,
     [SPECIES_DIGLETT] = gMonFootprint_Diglett,

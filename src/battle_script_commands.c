@@ -1789,8 +1789,6 @@ static void Cmd_waitanimation(void)
 
 static void Cmd_healthbarupdate(void)
 {
-    u16 oldHp; // add declaration
-
     if (gBattleControllerExecFlags)
         return;
 
@@ -1821,8 +1819,6 @@ static void Cmd_healthbarupdate(void)
             if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER && gBattleMoveDamage > 0)
                 gBattleResults.playerMonWasDamaged = TRUE;
         }
-        if (gBattleMons[gActiveBattler].hp < oldHp && gBattleMons[gActiveBattler].hp != 0) // trigger ability if HP dropped
-            AbilityBattleEffects(ABILITYEFFECT_HP_CHANGE, gActiveBattler, 0, 0, 0);
     }
 
     gBattlescriptCurrInstr += 2;
@@ -1831,6 +1827,7 @@ static void Cmd_healthbarupdate(void)
 static void Cmd_datahpupdate(void)
 {
     u32 moveType;
+    u16 oldHp = 0;                       // ADD
 
     if (gBattleControllerExecFlags)
         return;
@@ -1845,6 +1842,7 @@ static void Cmd_datahpupdate(void)
     if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT))
     {
         gActiveBattler = GetBattlerForBattleScript(gBattlescriptCurrInstr[1]);
+        oldHp = gBattleMons[gActiveBattler].hp;          // ADD: first line in this block, before any HP change
         if (gBattleMons[gActiveBattler].status2 & STATUS2_SUBSTITUTE && gDisableStructs[gActiveBattler].substituteHP && !(gHitMarker & HITMARKER_IGNORE_SUBSTITUTE))
         {
             if (gDisableStructs[gActiveBattler].substituteHP >= gBattleMoveDamage)
@@ -1865,6 +1863,8 @@ static void Cmd_datahpupdate(void)
             if (gDisableStructs[gActiveBattler].substituteHP == 0)
             {
                 gBattlescriptCurrInstr += 2;
+            }
+
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_SubstituteFade;
                 return;
@@ -1952,6 +1952,21 @@ static void Cmd_datahpupdate(void)
             gSpecialStatuses[gActiveBattler].dmg = 0xFFFF;
     }
     gBattlescriptCurrInstr += 2;
+    // ADD: runs only after HP has really dropped and the script pointer has advanced
+     // Clear the low-HP ability message flag if HP recovers above 1/3.
+    if (gBattleMons[gActiveBattler].hp > oldHp
+     && oldHp <= gBattleMons[gActiveBattler].maxHP / 3
+     && gBattleMons[gActiveBattler].hp > gBattleMons[gActiveBattler].maxHP / 3)
+        {
+            gStatuses3[gActiveBattler] &= ~STATUS3_LOW_HP_ABILITY_MSG;
+        }
+     // Trigger the low-HP ability message when HP decreases.
+    if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+     && gBattleMons[gActiveBattler].hp < oldHp
+     && gBattleMons[gActiveBattler].hp != 0)
+        {
+            AbilityBattleEffects(ABILITYEFFECT_HP_CHANGE, gActiveBattler, 0, 0, 0);
+        }
 }
 
 static void Cmd_critmessage(void)
@@ -2774,6 +2789,8 @@ void SetMoveEffect(bool8 primary, u8 certain)
                 break;
             case MOVE_EFFECT_NIGHTMARE:
                 gBattleMons[gBattlerTarget].status2 |= STATUS2_NIGHTMARE;
+                gStatuses3[gBattlerTarget] &= ~STATUS3_NIGHTMARE_BATTLER;                          // ADD for HP drain tracking
+                gStatuses3[gBattlerTarget] |= (gBattlerAttacker << NIGHTMARE_BATTLER_SHIFT);       // ADD
                 gBattlescriptCurrInstr++;
                 break;
             case MOVE_EFFECT_ALL_STATS_UP:

@@ -428,13 +428,13 @@ static const u8 sText_ExclamationMark3[] = _("!");
 static const u8 sText_ExclamationMark4[] = _("!");
 static const u8 sText_ExclamationMark5[] = _("!");
 
-static const u8 sText_OvergrowBoosted[] = _("{B_ATK_NAME_WITH_PREFIX}'s Overgrow\nboosted its Grass moves!");
-static const u8 sText_BlazeBoosted[] = _("{B_ATK_NAME_WITH_PREFIX}'s Blaze\nboosted its Fire moves!");
-static const u8 sText_TorrentBoosted[] = _("{B_ATK_NAME_WITH_PREFIX}'s Torrent\nboosted its Water moves!");
-static const u8 sText_SwarmBoosted[] = _("{B_ATK_NAME_WITH_PREFIX}'s Swarm\nboosted its Bug moves!");
-static const u8 sText_EarlyBirdBoosted[] = _("{B_ATK_NAME_WITH_PREFIX}'s Early Bird\nboosted its Flying moves!");
-static const u8 sText_IlluminateBoosted[] = _("{B_ATK_NAME_WITH_PREFIX}'s Illuminate\nboosted its Electric moves!");
-static const u8 sText_StenchBoosted[] = _("{B_ATK_NAME_WITH_PREFIX}'s Stench\nboosted its Poison moves!");
+static const u8 sText_OvergrowBoosted[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s Overgrow\nboosted its Grass moves!");
+static const u8 sText_BlazeBoosted[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s Blaze\nboosted its Fire moves!");
+static const u8 sText_TorrentBoosted[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s Torrent\nboosted its Water moves!");
+static const u8 sText_SwarmBoosted[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s Swarm\nboosted its Bug moves!");
+static const u8 sText_EarlyBirdBoosted[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s Early Bird\nboosted its Flying moves!");
+static const u8 sText_IlluminateBoosted[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s Illuminate\nboosted its Electric moves!");
+static const u8 sText_StenchBoosted[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s Stench\nboosted its Poison moves!");
 
 
 const u16 gLowHpAbilityBoostStringIds[] = {

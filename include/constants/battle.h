@@ -153,6 +153,8 @@
 #define STATUS3_TRACE                   (1 << 20)
 #define STATUS3_SEMI_INVULNERABLE       (STATUS3_UNDERGROUND | STATUS3_ON_AIR | STATUS3_UNDERWATER)
 #define STATUS3_LOW_HP_ABILITY_MSG		(1 << 21) // added for blaze/torrent/overgrow message trigger
+#define STATUS3_NIGHTMARE_BATTLER (1 << 22 | 1 << 23) // The battler that inflicted Nightmare
+#define STATUS3_NIGHTMARE_BATTLER_SHIFT 22
 
 // Not really sure what a "hitmarker" is.
 #define HITMARKER_WAKE_UP_CLEAR         (1 << 4) // Cleared when waking up. Never set or checked.

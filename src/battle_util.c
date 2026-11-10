@@ -872,11 +872,20 @@ u8 DoBattlerEndTurnEffects(void)
                     // persist even after the affected Pokemon has been awakened by Shed Skin.
                     if (gBattleMons[gActiveBattler].status1 & STATUS1_SLEEP)
                     {
+                        u8 receiver = (gStatuses3[gActiveBattler] & STATUS3_NIGHTMARE_BATTLER) >> NIGHTMARE_BATTLER_SHIFT; //add for HP drain
                         gBattleMoveDamage = gBattleMons[gActiveBattler].maxHP / 4;
                         if (gBattleMoveDamage == 0)
                             gBattleMoveDamage = 1;
-                        BattleScriptExecute(BattleScript_NightmareTurnDmg);
-                        effect++;
+                        if (receiver != gActiveBattler && gBattleMons[receiver].hp != 0)
+                            {
+                                gBattlerTarget = receiver; // the HP receiver, as with Leech Seed
+                                BattleScriptExecute(BattleScript_NightmareTurnDrain);
+                            }
+                        else
+                            {
+                                BattleScriptExecute(BattleScript_NightmareTurnDmg);
+                            }
+                            effect++;
                     }
                     else
                     {
@@ -1861,10 +1870,10 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                         }
                     }
                 }
-                break;
+                break; 
             }
             break;
-            case ABILITYEFFECT_HP_CHANGE:
+        case ABILITYEFFECT_HP_CHANGE:
                 {
                     u8 ability = gBattleMons[battler].ability;
                     if ((ability == ABILITY_BLAZE

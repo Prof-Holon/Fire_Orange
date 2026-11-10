@@ -240,6 +240,11 @@ const struct MonCoords gMonBackPicCoords[] =
         .size = MON_COORDS_SIZE(64, 56),
         .y_offset = 7,
     },
+     [SPECIES_PARASHED] =
+    {
+        .size = MON_COORDS_SIZE(64, 56),
+        .y_offset = 7,
+    },
     [SPECIES_VENONAT] =
     {
         .size = MON_COORDS_SIZE(56, 56),
