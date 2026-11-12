@@ -468,9 +468,9 @@ BattleScript_DreamEaterWorked:
 	waitmessage B_WAIT_TIME_LONG
 	resultmessage
 	waitmessage B_WAIT_TIME_LONG
-	jumpifability BS_TARGET, ABILITY_LIQUID_OOZE, BattleScript_AbsorbLiquidOoze
 	negativedamage
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
+	jumpifability BS_TARGET, ABILITY_LIQUID_OOZE, BattleScript_AbsorbLiquidOoze
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	jumpifmovehadnoeffect BattleScript_DreamEaterTryFaintEnd

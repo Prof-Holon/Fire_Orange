@@ -3044,7 +3044,7 @@ u8 IsRunningFromBattleImpossible(void)
         }
     }
     i = AbilityBattleEffects(ABILITYEFFECT_CHECK_FIELD_EXCEPT_BATTLER, gActiveBattler, ABILITY_MAGNET_PULL, 0, 0);
-    if (i != 0 && IS_BATTLER_OF_TYPE(gActiveBattler, TYPE_STEEL))
+    if (i != 0 && (IS_BATTLER_OF_TYPE(gActiveBattler, TYPE_ROCK) || IS_BATTLER_OF_TYPE(gActiveBattler, TYPE_ELECTRIC)))
     {
         gBattleScripting.battler = i - 1;
         gLastUsedAbility = gBattleMons[i - 1].ability;
@@ -3416,19 +3416,22 @@ u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves)
     u8 holdEffectParam = 0;
     u16 moveBattler1 = 0, moveBattler2 = 0;
 
+    speedMultiplierBattler1 = 1;
+    speedMultiplierBattler2 = 1;
+
     if (WEATHER_HAS_EFFECT)
     {
         if ((gBattleMons[battler1].ability == ABILITY_SWIFT_SWIM && gBattleWeather & B_WEATHER_RAIN)
-            || (gBattleMons[battler1].ability == ABILITY_CHLOROPHYLL && gBattleWeather & B_WEATHER_SUN)
-            || (gBattleMons[battler1].ability == ABILITY_AIR_LOCK && gBattleWeather))
+            || (gBattleMons[battler1].ability == ABILITY_CHLOROPHYLL && gBattleWeather & B_WEATHER_SUN))
             speedMultiplierBattler1 = 2;
-        else
-            speedMultiplierBattler1 = 1;
         if ((gBattleMons[battler2].ability == ABILITY_SWIFT_SWIM && gBattleWeather & B_WEATHER_RAIN)
             || (gBattleMons[battler2].ability == ABILITY_CHLOROPHYLL && gBattleWeather & B_WEATHER_SUN))
             speedMultiplierBattler2 = 2;
-        else
-            speedMultiplierBattler2 = 1;
+        else if (gBattleWeather != 0) // weather exists but is negated
+        {
+            if (gBattleMons[battler1].ability == ABILITY_AIR_LOCK) speedMultiplierBattler1 = 2;
+            if (gBattleMons[battler2].ability == ABILITY_AIR_LOCK) speedMultiplierBattler2 = 2;
+        }
     }
     
     // add vital spirit speed boost for both battlers
@@ -3437,7 +3440,7 @@ u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves)
     if (gBattleMons[battler2].ability == ABILITY_VITAL_SPIRIT && gBattleMons[battler2].status1)
         speedMultiplierBattler2 = 2;
 
-    // add speed doubling if Minus/Plus ally
+    // add speed doubling if Minus/Plus on field
     if (gBattleMons[battler1].ability == ABILITY_PLUS && ABILITY_ON_FIELD2(ABILITY_MINUS))
         speedMultiplierBattler1 = 2;
     if (gBattleMons[battler2].ability == ABILITY_PLUS && ABILITY_ON_FIELD2(ABILITY_MINUS))
@@ -3446,12 +3449,6 @@ u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves)
         speedMultiplierBattler1 = 2;
     if (gBattleMons[battler2].ability == ABILITY_MINUS && ABILITY_ON_FIELD2(ABILITY_PLUS))
         speedMultiplierBattler2 = 2;
-
-    else
-    {
-        speedMultiplierBattler1 = 1;
-        speedMultiplierBattler2 = 1;
-    }
 
     speedBattler1 = (gBattleMons[battler1].speed * speedMultiplierBattler1)
                 * (gStatStageRatios[gBattleMons[battler1].statStages[STAT_SPEED]][0])

@@ -1640,26 +1640,6 @@ static const u16 sHMMoves[] =
     MOVE_ROCK_SMASH, MOVE_WATERFALL, MOVE_DIVE, HM_MOVES_END
 };
 
-#define ABILITY_MOVE_LIST_END 0xFFFF
-
-static const u16 sSlicingMoves[] =
-{
-    MOVE_CUT, MOVE_RAZOR_LEAF, MOVE_SLASH, MOVE_FURY_CUTTER,
-    MOVE_AIR_CUTTER, MOVE_AERIAL_ACE, MOVE_LEAF_BLADE, MOVE_RAZOR_WIND, ABILITY_MOVE_LIST_END
-};
-
-static const u16 sClawMoves[] =
-{
-    MOVE_VICE_GRIP, MOVE_CLAMP, MOVE_CRABHAMMER, MOVE_METAL_CLAW,
-    MOVE_CRUSH_CLAW, MOVE_DRAGON_CLAW, MOVE_GUILLOTINE, ABILITY_MOVE_LIST_END
-};
-
-static const u16 sHeadMoves[] =
-{
-    MOVE_HEADBUTT, MOVE_MEGAHORN, MOVE_HORN_ATTACK,
-    MOVE_SKULL_BASH, MOVE_HORN_DRILL, ABILITY_MOVE_LIST_END
-};
-
 #if defined(FIRERED)
 // Attack forme
 static const u16 sDeoxysBaseStats[] = 
@@ -2505,7 +2485,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
 
     if (attacker->ability == ABILITY_HUGE_POWER)
         attack *= 2;
-    if (attacker->ability == attacker->ability == ABILITY_PURE_POWER)
+    if (attacker->ability == ABILITY_PURE_POWER)
         spAttack *= 2;
 
     if (ShouldGetStatBadgeBoost(FLAG_BADGE01_GET, battlerIdAtk))
@@ -2545,9 +2525,10 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     if (attackerHoldEffect == HOLD_EFFECT_LIGHT_BALL && attacker->species == SPECIES_PIKACHU)
         spAttack *= 2;
     if (attackerHoldEffect == HOLD_EFFECT_DOUBLE_PRIZE && attacker->species == SPECIES_MEOWTH) // add for amulet coin
-        Attack *= 2;
+        attack *= 2;
     if (defenderHoldEffect == HOLD_EFFECT_METAL_POWDER && defender->species == SPECIES_DITTO)
         defense *= 2;
+        spAttack *= 2;
     if (attackerHoldEffect == HOLD_EFFECT_THICK_CLUB && (attacker->species == SPECIES_CUBONE || attacker->species == SPECIES_MAROWAK))
         attack *= 2;
     // Apply effects of abilities
@@ -2562,10 +2543,10 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         spAttack = (150 * spAttack) / 100;
     if (attacker->ability == ABILITY_MINUS && HasOtherElectricType(gBattlerAttacker))
         spAttack = (150 * spAttack) / 100;
-    if (defender->ability == ABILITY_PLUS && HasOtherRockType(gBattlerAttacker))
-        spAttack = (150 * spAttack) / 100;
-    if (defender->ability == ABILITY_MINUS && HasOtherElectricType(gBattlerAttacker))
-        spAttack = (150 * spAttack) / 100;
+    if (defender->ability == ABILITY_PLUS && HasOtherRockType(battlerIdDef))
+        spDefense = (150 * spDefense) / 100;
+    if (defender->ability == ABILITY_MINUS && HasOtherElectricType(battlerIdDef))
+        spDefense = (150 * spDefense) / 100;
     if (attacker->ability == ABILITY_GUTS && attacker->status1)
         attack = (150 * attack) / 100;
     if (defender->ability == ABILITY_MARVEL_SCALE && defender->status1)
@@ -2590,12 +2571,12 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
             gBattleMovePower = (150 * gBattleMovePower) / 100;  
     // Hyper Cutter: 1.5x boost for slicing or claw moves
     if (attacker->ability == ABILITY_HYPER_CUTTER
-        && (IsMoveInList(move, sSlicingMoves) || IsMoveInList(move, sClawMoves)))
+    && (gBattleMoves[move].flags & (FLAG_SLICING | FLAG_CLAW)))
         gBattleMovePower = (150 * gBattleMovePower) / 100;
     // Rock Head: 1.5x boost for head moves
     if (attacker->ability == ABILITY_ROCK_HEAD
-        && IsMoveInList(move, sHeadMoves))
-            gBattleMovePower = (150 * gBattleMovePower) / 100;
+    && (gBattleMoves[move].flags & FLAG_HEAD))
+        gBattleMovePower = (150 * gBattleMovePower) / 100;
 
     // Self-destruct / Explosion cut defense in half
     if (gBattleMoves[gCurrentMove].effect == EFFECT_EXPLOSION)
@@ -2607,6 +2588,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         {
             // Critical hit, if attacker has lost attack stat stages then ignore stat drop
             if (attacker->statStages[STAT_ATK] > DEFAULT_STAT_STAGE)
+            && defender->ability != ABILITY_PRESSURE)          // ADD
                 APPLY_STAT_MOD(damage, attacker, attack, STAT_ATK)
             else
                 damage = attack;
@@ -2676,6 +2658,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         {
             // Critical hit, if attacker has lost sp. attack stat stages then ignore stat drop
             if (attacker->statStages[STAT_SPATK] > DEFAULT_STAT_STAGE)
+            && defender->ability != ABILITY_PRESSURE)          // ADD
                 APPLY_STAT_MOD(damage, attacker, spAttack, STAT_SPATK)
             else
                 damage = spAttack;
@@ -2696,15 +2679,15 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         {
             // Critical hit, if defender has gained sp. defense stat stages then ignore stat increase
             if (defender->statStages[STAT_SPATK] < DEFAULT_STAT_STAGE)
-                APPLY_STAT_MOD(damageHelper, defender, spAttack, STAT_SPATK)
+                APPLY_STAT_MOD(damageHelper, defender, spDefense, STAT_SPDEF)
             else
-                damageHelper = spAttack;
+                damageHelper = spDefense;
         }
         else
         {
             // ADD: Pressure ignores SpDef boosts
             if (attacker->ability == ABILITY_PRESSURE
-             && defender->statStages[STAT_SPATK] > DEFAULT_STAT_STAGE)
+             && defender->statStages[STAT_SPDEF] > DEFAULT_STAT_STAGE)
                 damageHelper = spDefense;
             else
                 APPLY_STAT_MOD(damageHelper, defender, spDefense, STAT_SPDEF)

@@ -26,27 +26,7 @@
 #include "constants/battle_move_effects.h"
 #include "constants/battle_script_commands.h"
 
-#define SOUND_MOVES_END 0xFFFF
 
-static const u16 sSoundMovesTable[] =
-{
-    MOVE_GROWL, MOVE_ROAR, MOVE_SING, MOVE_SUPERSONIC, MOVE_SCREECH, MOVE_SNORE,
-    MOVE_UPROAR, MOVE_METAL_SOUND, MOVE_GRASS_WHISTLE, MOVE_HYPER_VOICE, SOUND_MOVES_END
-};
-
-#define PRIO_MOVES_END 0xFFFF
-
-static const u16 sPrioMoves[] =
-{
-    MOVE_QUICK_ATTACK, MOVE_EXTREME_SPEED, MOVE_FAKE_OUT, MOVE_MACH_PUNCH, PRIO_MOVES_END
-};
-
-#define TAUNT_MOVES_END 0xFFFF
-
-static const u16 sTauntMoves[] =
-{
-    MOVE_TAUNT, MOVE_FOLLOW_ME, TAUNT_MOVES_END
-};
 
 extern const u8 BattleScript_TruantHeal[];
 extern const u8 BattleScript_SnowWarningActivates[];
@@ -2004,12 +1984,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         case ABILITYEFFECT_MOVES_BLOCK: // 2
             if (gLastUsedAbility == ABILITY_SOUNDPROOF)
             {
-                for (i = 0; sSoundMovesTable[i] != SOUND_MOVES_END; i++)
-                {
-                    if (sSoundMovesTable[i] == move)
-                        break;
-                }
-                if (sSoundMovesTable[i] != SOUND_MOVES_END)
+                if (gBattleMoves[move].flags & FLAG_SOUND) //added move flag
                 {
                     if (gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS)
                         gHitMarker |= HITMARKER_NO_PPDEDUCT;
@@ -2017,15 +1992,12 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                     effect = 1;
                 }
             }
-            // ADD: Oblivious and Inner Focus blocks taunt/redirect moves
+            // ADD: Oblivious and Inner Focus blocks taunt
             else if (gLastUsedAbility == ABILITY_OBLIVIOUS || gLastUsedAbility == ABILITY_INNER_FOCUS)
             {
-                for (i = 0; sTauntMoves[i] != TAUNT_MOVES_END; i++)
-                {
-                    if (sTauntMoves[i] == move)
-                        break;
-                }
-                if (sTauntMoves[i] != TAUNT_MOVES_END)
+                if (gCurrentMove == MOVE_TAUNT
+                    || gCurrentMove == MOVE_SWAGGER
+                    || gCurrentMove == MOVE_FLATTER)
                 {
                     if (gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS)
                         gHitMarker |= HITMARKER_NO_PPDEDUCT;
@@ -2096,7 +2068,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                         // Apply permanent Charge boost until switch
                         gStatuses3[battler] |= STATUS3_CHARGED_UP;
 
-                        gBattlescriptCurrInstr = BattleScript_MoveHPDrain; // reuse generic ability popup
+                        gBattlescriptCurrInstr = BattleScript_SoundproofProtected; // reuse generic ability popup
                         effect = 2; // cancels the hit (immunity)
                     }
                     break;

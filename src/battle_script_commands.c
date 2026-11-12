@@ -39,14 +39,6 @@
 
 extern const u8 *const gBattleScriptsForMoveEffects[];
 
-#define SOUND_MOVES_END 0xFFFF
-
-static const u16 sSoundMovesTable[] =
-{
-    MOVE_GROWL, MOVE_ROAR, MOVE_SING, MOVE_SUPERSONIC, MOVE_SCREECH, MOVE_SNORE,
-    MOVE_UPROAR, MOVE_METAL_SOUND, MOVE_GRASS_WHISTLE, MOVE_HYPER_VOICE, SOUND_MOVES_END
-};
-
 #define DEFENDER_IS_PROTECTED ((gProtectStructs[gBattlerTarget].protected) && (gBattleMoves[gCurrentMove].flags & FLAG_PROTECT_AFFECTED))
 
 #define LEVEL_UP_BANNER_START 416
@@ -971,18 +963,12 @@ static bool8 AccuracyCalcHelper(u16 move)
         return TRUE;
     }
     // ADD: Cacophony — sound moves always hit
-    if (gBattleMons[gBattlerAttacker].ability == ABILITY_CACOPHONY)
-    {
-        s32 i;
-        for (i = 0; sSoundMovesTable[i] != 0xFFFF; i++)
+    if (gBattleMons[gBattlerAttacker].ability == ABILITY_CACOPHONY
+    && (gBattleMoves[move].flags & FLAG_SOUND))
         {
-            if (sSoundMovesTable[i] == move)
-            {
-                JumpIfMoveFailed(7, move);
-                return TRUE;
-            }
+            JumpIfMoveFailed(7, move);
+            return TRUE;
         }
-    }
     // END ADD
     if (!(gHitMarker & HITMARKER_IGNORE_ON_AIR) && gStatuses3[gBattlerTarget] & STATUS3_ON_AIR)
     {
@@ -1228,7 +1214,7 @@ static void Cmd_critcalc(void)
                 + (gBattleMoves[gCurrentMove].effect == EFFECT_BLAZE_KICK)
                 + (gBattleMoves[gCurrentMove].effect == EFFECT_POISON_TAIL)
                 + (holdEffect == HOLD_EFFECT_SCOPE_LENS)
-                + 2 * (holdEffect == HOLD_EFFECT_LUCKY_PUNCH && (gBattleMoves[gCurrentMove].flags & FLAG_PUNCHING))
+                + 2 * (holdEffect == HOLD_EFFECT_LUCKY_PUNCH && (gBattleMoves[gCurrentMove].flags & FLAG_PUNCH))
                 + 2 * (holdEffect == HOLD_EFFECT_STICK && gBattleMons[gBattlerAttacker].species == SPECIES_FARFETCHD);
 
         // ADD: high crit moves guarantee at least stage 4
@@ -2589,7 +2575,7 @@ void SetMoveEffect(bool8 primary, u8 certain)
                 }
                 else
                 {
-                    if (gBattleMons[gEffectBattler].ability == ABILITY_SUCTION_CUPS)
+                    if (gBattleMons[gBattlerAttacker].ability == ABILITY_SUCTION_CUPS)
                     gBattleMons[gEffectBattler].status2 |= STATUS2_WRAPPED_TURN((Random() & 1) + 4); // 4-5 turns
                     else
                     gBattleMons[gEffectBattler].status2 |= STATUS2_WRAPPED_TURN((Random() & 3) + 2); // 2-5 turns

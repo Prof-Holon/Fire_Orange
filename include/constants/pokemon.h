@@ -244,6 +244,11 @@
 #define FLAG_MIRROR_MOVE_AFFECTED   (1 << 4)
 #define FLAG_KINGS_ROCK_AFFECTED    (1 << 5)
 #define FLAG_PUNCH					(1 << 6)
+#define FLAG_SLICE					(1 << 7)
+#define FLAG_CLAW					(1 << 8)
+#define FLAG_HEAD					(1 << 9)
+#define FLAG_SOUND					(1 << 10)
+
 
 // Growth rates
 #define GROWTH_MEDIUM_FAST  0
